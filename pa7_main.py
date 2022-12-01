@@ -1,3 +1,33 @@
+import pygame as pyg
+import numpy as np
+import math, random
+
+def drop_meteors(met_list, met_dim, width): #last edited by Liam
+    rx = random.randint(0, width)
+    newpos = [rx,0]
+    met_list.append(newpos)
+
+
+def set_speed(s):
+    return s * 0.001
+
+def update_meteor_positions(met_list, height, score, speed):
+    for m in met_list:
+        m[1] += speed
+        random.seed()
+
+def collision_check():
+    pass
+
+def draw_meteors():
+    pass
+
+def detect_collision():
+    pass
+
+
+
+
 def main():
     '''
     Initialize pygame and pygame parameters.  Note that both player and meteors
@@ -64,7 +94,7 @@ def main():
         if collision_check(met_list, player_pos, player_dim, met_dim):
             game_over = True                       # read PA prompt
     
-        clock.tick(30)                             # set frame rate to control
+        clock.tick(1)                             # set frame rate to control
                                                    # frames per second (~30); 
                                                    # slows down game
 
