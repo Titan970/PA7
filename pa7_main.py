@@ -16,6 +16,7 @@ def update_meteor_positions(met_list, height, score, speed):
         m[1] += speed
         random.seed()
 
+#add comment
 def collision_check():
     pass
 
