@@ -1,5 +1,5 @@
 import pygame as pyg # test comment
-import numpy as np
+import numpy as np # test comment 2
 import math, random
 
 def drop_meteors(met_list, met_dim, width): #last edited by Liam
