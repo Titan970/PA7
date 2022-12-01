@@ -9,7 +9,7 @@ def drop_meteors(met_list, met_dim, width): #last edited by Liam
 
 
 def set_speed(s):
-    return s * 0.001
+    return s * 0.05 #now more reasonable
 
 def update_meteor_positions(met_list, height, score, speed):
     for m in met_list:
