@@ -1,5 +1,5 @@
-import pygame as pyg #test comment
-import numpy as np #test comment 2
+import pygame as pyg
+import numpy as np 
 import math, random
 
 def drop_meteors(met_list, met_dim, width): #last edited by Liam
@@ -25,9 +25,6 @@ def draw_meteors():
 
 def detect_collision():
     pass
-
-#aaaaaaaa test branch $more swag$
-#bbbb
 
 def main():
     '''
