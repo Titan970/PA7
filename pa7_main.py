@@ -5,16 +5,17 @@ import math, random
 def drop_meteors(met_list, met_dim, width): #liam
     rx = random.randint(0, width)
     newpos = [rx,0]
-    met_list.append(newpos)
+    if random.randint(0,5) == 2:
+        met_list.append(newpos)
 
 
 def set_speed(s):
-    if type(s) == "int":
+    if type(s) == type(4):
         return s * 1
     else:
-        return 0
+        return 999
 
-def update_meteor_positions(met_list2, height, score, speed):
+def update_meteor_positions(met_list2, height, score, speed, a):
     '''
 
     The parameters are the meteor list, with the nested list of positions, the height of the screen, the score, and the speed of the meteor.
@@ -27,12 +28,15 @@ def update_meteor_positions(met_list2, height, score, speed):
     #   if met_position in list(range(0, height)):
     #     #increase y, and increase the score every time the meteor goes beyond the bound.
     #     met_position[1] += speed
-    for met_position in met_list2:
-        #increase y, and increase the score every time the meteor goes beyond the bound.
-        met_position[1] += 10 # * speed
-        
-    global met_list
-    met_list = met_list2
+    if a:
+        for m in met_list2:
+            if m[1] > height:
+                met_list2.remove(m)
+                score += 1
+            else:
+                m[1] += 10
+        return score
+    
 
 #add comment
 def collision_check(met_list, player_pos, player_dim, met_dim): ##shane
@@ -41,9 +45,6 @@ def collision_check(met_list, player_pos, player_dim, met_dim): ##shane
         hit = detect_collision(met_pos, player_pos, player_dim, met_dim)
         if hit == True:
             return True
-        else:
-            return False
-    return
 
 def draw_meteors(met_list, met_dim, screen, color):#eva
     '''
@@ -52,29 +53,25 @@ add docstring
     for met_position in met_list:
         pyg.draw.rect(screen, color,(met_position[0],met_position[1], met_dim, met_dim) )
 
-def detect_collision(met_pos, player_pos, player_dim, met_dim): #shane
-    for i in range(len(player_pos)):
-        if i == 0:
-            Player_x_axis = player_pos[i] + player_dim
+def inBounds(a1,a2,b1,b2):
+    if a1 < b2 and a2 > b1:
+        return True
+    else:
+        return False
+def detect_collision(met_pos, player_pos, player_dim, met_dim): #liam
+    px = player_pos[0]
+    py = player_pos[1]
+    mx = met_pos[0]
+    my = met_pos[1]
+    mb = met_dim
+    pb = player_dim
+    if my + mb > py and my < py + pb:
+        if px < mx + mb and px + pb > mx:
+            return True
         else:
-            Player_y_axis = player_pos[i] - player_dim
-    for i in range(len(met_pos)):
-        if i == 0:
-            meteor_x_axis = met_pos[i] + met_dim
-        else:
-            meteor_y_axis = met_pos[i] - met_dim
-    for i in range(int(player_pos[0]), int(Player_x_axis)):
-        for k in range(met_pos[0], meteor_x_axis):
-            if i == k:
-                for m in range(player_pos[1], Player_y_axis):
-                    for o in range(met_pos[1], meteor_y_axis):
-                        if m == o:
-                            return True
-                        else:
-                            return False
-            else:
-                return False
-    return
+            return False
+    else:
+        return False
 
 def main():
     '''
@@ -83,7 +80,8 @@ def main():
     player and meteors, respectively.  Each line of code is commented.
     '''
     pyg.init()                # initialize pygame
-
+    ####
+    ####
     width = 800               # set width of game screen in pixels
     height = 600              # set height of game screen in pixels
 
@@ -126,7 +124,7 @@ def main():
         screen.fill(background)                # refresh screen bg color
         drop_meteors(met_list, met_dim, width) # read PA prompt
         speed = set_speed(score)               # read PA prompt
-        score = update_meteor_positions(met_list, height, score, speed)
+        score = update_meteor_positions(met_list, height, score, speed,True)
                                                # read PA prompt
         text = "Score: " + str(score)              # create score text
         label = my_font.render(text, 1, yellow)    # render text into label
@@ -142,7 +140,7 @@ def main():
         if collision_check(met_list, player_pos, player_dim, met_dim):
             game_over = True                       # read PA prompt
     
-        clock.tick(30)                             # set frame rate to control
+        clock.tick(10)                             # set frame rate to control
                                                    # frames per second (~30); 
                                                    # slows down game
 
