@@ -2,29 +2,79 @@ import pygame as pyg
 import numpy as np 
 import math, random
 
-def drop_meteors(met_list, met_dim, width): #last edited by Liam
+def drop_meteors(met_list, met_dim, width): #liam
     rx = random.randint(0, width)
     newpos = [rx,0]
     met_list.append(newpos)
 
 
 def set_speed(s):
-    return s * 0.05 #now more reasonable
+    if type(s) == "int":
+        return s * 1
+    else:
+        return 0
 
-def update_meteor_positions(met_list, height, score, speed):
-    for m in met_list:
-        m[1] += speed
-        random.seed()
+def update_meteor_positions(met_list2, height, score, speed):
+    '''
+
+    The parameters are the meteor list, with the nested list of positions, the height of the screen, the score, and the speed of the meteor.
+    This function checks if the meteor is still in the range of the screen through referencing the height (since the meteor is only falling vertically.)
+    For every meteor in met_position, we are checking if it is in the screen and if it is we are increasing it by the speed,
+    and if it isn't then the score is increased by 1. Then we return the score since it is the only parameter adjusted. 
+    '''
+   #check if meteor is still in screen
+    # for met_position in met_list:
+    #   if met_position in list(range(0, height)):
+    #     #increase y, and increase the score every time the meteor goes beyond the bound.
+    #     met_position[1] += speed
+    for met_position in met_list2:
+        #increase y, and increase the score every time the meteor goes beyond the bound.
+        met_position[1] += 10 # * speed
+        
+    global met_list
+    met_list = met_list2
 
 #add comment
-def collision_check():
-    pass
+def collision_check(met_list, player_pos, player_dim, met_dim): ##shane
+    for i in range(len(met_list)):
+        met_pos = met_list[i]
+        hit = detect_collision(met_pos, player_pos, player_dim, met_dim)
+        if hit == True:
+            return True
+        else:
+            return False
+    return
 
-def draw_meteors():
-    pass
+def draw_meteors(met_list, met_dim, screen, color):#eva
+    '''
+add docstring
+    '''
+    for met_position in met_list:
+        pyg.draw.rect(screen, color,(met_position[0],met_position[1], met_dim, met_dim) )
 
-def detect_collision():
-    pass
+def detect_collision(met_pos, player_pos, player_dim, met_dim): #shane
+    for i in range(len(player_pos)):
+        if i == 0:
+            Player_x_axis = player_pos[i] + player_dim
+        else:
+            Player_y_axis = player_pos[i] - player_dim
+    for i in range(len(met_pos)):
+        if i == 0:
+            meteor_x_axis = met_pos[i] + met_dim
+        else:
+            meteor_y_axis = met_pos[i] - met_dim
+    for i in range(int(player_pos[0]), int(Player_x_axis)):
+        for k in range(met_pos[0], meteor_x_axis):
+            if i == k:
+                for m in range(player_pos[1], Player_y_axis):
+                    for o in range(met_pos[1], meteor_y_axis):
+                        if m == o:
+                            return True
+                        else:
+                            return False
+            else:
+                return False
+    return
 
 def main():
     '''
@@ -92,7 +142,7 @@ def main():
         if collision_check(met_list, player_pos, player_dim, met_dim):
             game_over = True                       # read PA prompt
     
-        clock.tick(1)                             # set frame rate to control
+        clock.tick(30)                             # set frame rate to control
                                                    # frames per second (~30); 
                                                    # slows down game
 
