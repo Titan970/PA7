@@ -2,6 +2,12 @@ import pygame as pyg
 import numpy as np 
 import math, random
 
+particleList = []
+    
+
+
+
+
 def drop_meteors(met_list, met_dim, width): #liam
     rx = random.randint(0, width)
     newpos = [rx,0]
@@ -134,13 +140,16 @@ def main():
                                                    # blit to mean draw
         draw_meteors(met_list, met_dim, screen, yellow) # self-explanatory;
                                                         # read PA prompt
-
+        ##
+        for x in particleList:
+            pyg.draw.rect(screen, (0,255,0), x[0], x[1], 0.1,0.1)
+        ##
         pyg.draw.rect(screen, red, (player_pos[0], player_pos[1], player_dim, player_dim))                                        # draw player
 
         if collision_check(met_list, player_pos, player_dim, met_dim):
             game_over = True                       # read PA prompt
     
-        clock.tick(10)                             # set frame rate to control
+        clock.tick(30)                             # set frame rate to control
                                                    # frames per second (~30); 
                                                    # slows down game
 
