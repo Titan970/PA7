@@ -2,6 +2,52 @@ import pygame as pyg
 import numpy as np 
 import math, random
 
+#custom stuff here
+class Particle:
+    def __init__(self,x,y,vx,vy,life,size):
+        self.x = x
+        self.y = y
+        self.vx = vx
+        self.vy = vy
+        self.life = life
+        self.size = size
+        self.initialsize = size
+        self.initiallife = life
+    
+    def update(self):
+        self.x = self.x + self.vx
+        self.y = self.y + self.vy
+        self.life -= 1
+
+        self.size = (self.life / self.initiallife) * self.initialsize
+
+def t_particleBurst(x,y,particlelist):
+    for i in range(10):
+        vx = (random.random() - 0.5) * 15
+        vy = (random.random() - 0.5) * 15
+        t_createParticle(x,y,vx,vy,20,30,particlelist)
+
+def t_createParticle(x,y,vx,vy,life,size,particlelist):
+    '''
+    x y pixel coords
+    velocity is p/s
+    life is in frames until death
+    '''
+    p = Particle(x,y,vx,vy,life,size)
+    particlelist.append(p)
+
+def t_updateParticles(screen,color,particlelist):
+    for p in particlelist:
+        p.update()
+    for p in list(particlelist):
+        if p.life <= 0:
+            particlelist.remove(p)
+            del p
+    
+    for p in particlelist:
+        pyg.draw.rect(screen,color,(p.x,p.y,p.size,p.size))
+#
+
 def drop_meteors(met_list, met_dim, width): #liam
     rx = random.randint(0, width)
     newpos = [rx,0]
@@ -15,7 +61,7 @@ def set_speed(s):
     else:
         return 999
 
-def update_meteor_positions(met_list2, height, score, speed, a):
+def update_meteor_positions(met_list2, height, score, speed, a,pl):
     '''
 
     The parameters are the meteor list, with the nested list of positions, the height of the screen, the score, and the speed of the meteor.
@@ -32,9 +78,13 @@ def update_meteor_positions(met_list2, height, score, speed, a):
         for m in met_list2:
             if m[1] > height:
                 met_list2.remove(m)
+                t_particleBurst(m[0],m[1]-30,pl)
                 score += 1
             else:
                 m[1] += 10
+                x = random.random() -0.5
+                if random.randint(1,3) == 1:
+                    t_createParticle(m[0],m[1],x*5,0,20,15,pl)
         return score
     
 
@@ -105,6 +155,10 @@ def main():
                               # is detected
 
     score = 0                 # initialize score
+    #custom
+    t_utime = 0
+    particlelist = []
+    #
 
     clock = pyg.time.Clock()  # initialize clock to track time
 
@@ -124,7 +178,7 @@ def main():
         screen.fill(background)                # refresh screen bg color
         drop_meteors(met_list, met_dim, width) # read PA prompt
         speed = set_speed(score)               # read PA prompt
-        score = update_meteor_positions(met_list, height, score, speed,True)
+        score = update_meteor_positions(met_list, height, score, speed,True,particlelist)
                                                # read PA prompt
         text = "Score: " + str(score)              # create score text
         label = my_font.render(text, 1, yellow)    # render text into label
@@ -134,13 +188,16 @@ def main():
                                                    # blit to mean draw
         draw_meteors(met_list, met_dim, screen, yellow) # self-explanatory;
                                                         # read PA prompt
-
+        t_updateParticles(screen,yellow,particlelist)
+        print(len(particlelist))
         pyg.draw.rect(screen, red, (player_pos[0], player_pos[1], player_dim, player_dim))                                        # draw player
 
         if collision_check(met_list, player_pos, player_dim, met_dim):
             game_over = True                       # read PA prompt
     
         clock.tick(30)                             # set frame rate to control
+        t_utime += 1
+        
                                                    # frames per second (~30); 
                                                    # slows down game
 
