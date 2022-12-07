@@ -2,12 +2,6 @@ import pygame as pyg
 import numpy as np 
 import math, random
 
-particleList = []
-    
-
-
-
-
 def drop_meteors(met_list, met_dim, width): #liam
     rx = random.randint(0, width)
     newpos = [rx,0]
