@@ -101,13 +101,8 @@ def draw_meteors(met_list, met_dim, screen, color):#eva
 add docstring
     '''
     for met_position in met_list:
-        pyg.draw.rect(screen, color,(met_position[0],met_position[1], met_dim, met_dim) )
+        pyg.draw.rect(screen, color,(met_position[0],met_position[1], met_dim, met_dim))
 
-def inBounds(a1,a2,b1,b2):
-    if a1 < b2 and a2 > b1:
-        return True
-    else:
-        return False
 def detect_collision(met_pos, player_pos, player_dim, met_dim): #liam
     px = player_pos[0]
     py = player_pos[1]
