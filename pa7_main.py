@@ -22,6 +22,9 @@ class Particle:
         self.size = (self.life / self.initiallife) * self.initialsize
 
 def t_particleBurst(x,y,particlelist):
+    '''
+    creates a burst of particles, basic implementation
+    '''
     for i in range(10):
         vx = (random.random() - 0.5) * 15
         vy = (random.random() - 0.5) * 15
