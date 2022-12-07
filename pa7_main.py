@@ -85,9 +85,9 @@ def main():
     width = 800               # set width of game screen in pixels
     height = 600              # set height of game screen in pixels
 
-    red = (255,0,0)           # rgb color of player
+    red = (250,250,210)           # rgb color of player
     yellow = (244,208,63)     # rgb color of meteors
-    background = (0,0,156)    # rgb color of sky (midnight blue)
+    background =  (72,61,139)    # rgb color of sky (purple)
 
     player_dim = 50           # player size in pixels
     player_pos = [width/2, height-2*player_dim]  # initial location of player
@@ -134,8 +134,7 @@ def main():
                                                    # blit to mean draw
         draw_meteors(met_list, met_dim, screen, yellow) # self-explanatory;
                                                         # read PA prompt
-        ##
-        ##
+
         pyg.draw.rect(screen, red, (player_pos[0], player_pos[1], player_dim, player_dim))                                        # draw player
 
         if collision_check(met_list, player_pos, player_dim, met_dim):
@@ -147,7 +146,7 @@ def main():
 
         pyg.display.update()                       # update screen characters
     # Outside while-loop now.
-    print('Final score:', score)                   # final score
+    print('Congrats player! Your final score is:', score)                   # final score
     pyg.quit()                                     # leave pygame
 
 main()
