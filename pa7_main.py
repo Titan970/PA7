@@ -135,8 +135,6 @@ def main():
         draw_meteors(met_list, met_dim, screen, yellow) # self-explanatory;
                                                         # read PA prompt
         ##
-        for x in particleList:
-            pyg.draw.rect(screen, (0,255,0), x[0], x[1], 0.1,0.1)
         ##
         pyg.draw.rect(screen, red, (player_pos[0], player_pos[1], player_dim, player_dim))                                        # draw player
 
