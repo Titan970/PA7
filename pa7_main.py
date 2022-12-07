@@ -22,6 +22,9 @@ class Particle:
         self.size = (self.life / self.initiallife) * self.initialsize
 
 def t_particleBurst(x,y,particlelist):
+    '''
+    creates a burst of particles, basic implementation
+    '''
     for i in range(10):
         vx = (random.random() - 0.5) * 15
         vy = (random.random() - 0.5) * 15
@@ -29,9 +32,9 @@ def t_particleBurst(x,y,particlelist):
 
 def t_createParticle(x,y,vx,vy,life,size,particlelist):
     '''
-    x y pixel coords
-    velocity is p/s
-    life is in frames until death
+    x y pixel coords\n
+    velocity is p/s\n
+    life is in frames until death\n
     '''
     p = Particle(x,y,vx,vy,life,size)
     particlelist.append(p)
@@ -56,6 +59,9 @@ def drop_meteors(met_list, met_dim, width): #liam
 
 
 def set_speed(s):
+    '''
+    sets the speed based on the score
+    '''
     if type(s) == type(4):
         return s * 1
     else:
@@ -98,7 +104,7 @@ def collision_check(met_list, player_pos, player_dim, met_dim): ##shane
 
 def draw_meteors(met_list, met_dim, screen, color):#eva
     '''
-add docstring
+    draws the meteors onto the screen, givin the list of meteor positions
     '''
     for met_position in met_list:
         pyg.draw.rect(screen, color,(met_position[0],met_position[1], met_dim, met_dim))
