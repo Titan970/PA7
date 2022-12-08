@@ -3,23 +3,6 @@ import numpy as np
 import math, random
 
 #custom stuff here
-class Particle:
-    def __init__(self,x,y,vx,vy,life,size):
-        self.x = x
-        self.y = y
-        self.vx = vx
-        self.vy = vy
-        self.life = life
-        self.size = size
-        self.initialsize = size
-        self.initiallife = life
-    
-    def update(self):
-        self.x = self.x + self.vx
-        self.y = self.y + self.vy
-        self.life -= 1
-
-        self.size = (self.life / self.initiallife) * self.initialsize
 
 def t_particleBurst(x,y,particlelist):
     '''
@@ -36,19 +19,19 @@ def t_createParticle(x,y,vx,vy,life,size,particlelist):
     velocity is p/s\n
     life is in frames until death\n
     '''
-    p = Particle(x,y,vx,vy,life,size)
+    p = [x,y,vx,vy,life,size,life,size]
+    ##  0  1 2  3  4    5    6    7 
     particlelist.append(p)
 
 def t_updateParticles(screen,color,particlelist):
-    for p in particlelist:
-        p.update()
+    for i, p in enumerate(particlelist):
+        particlelist[i] = [p[0]+ p[2],p[1]+p[3],p[2],p[3],p[4] - 1,(p[4] / p[6]) * p[7],p[6],p[7]]
     for p in list(particlelist):
-        if p.life <= 0:
+        if p[4] <= 0:
             particlelist.remove(p)
-            del p
     
     for p in particlelist:
-        pyg.draw.rect(screen,color,(p.x,p.y,p.size,p.size))
+        pyg.draw.rect(screen,color,(p[0],p[1],p[5],p[5]))
 #
 
 def drop_meteors(met_list, met_dim, width): #liam
@@ -139,6 +122,7 @@ def main():
     red = (250,250,210)           # rgb color of player
     yellow = (244,208,63)     # rgb color of meteors
     background =  (72,61,139)    # rgb color of sky (purple)
+    white = (255,255,255)
 
     player_dim = 50           # player size in pixels
     player_pos = [width/2, height-2*player_dim]  # initial location of player
@@ -189,7 +173,7 @@ def main():
                                                    # blit to mean draw
         draw_meteors(met_list, met_dim, screen, yellow) # self-explanatory;
                                                         # read PA prompt
-        t_updateParticles(screen,yellow,particlelist)
+        t_updateParticles(screen,white,particlelist)
         print(len(particlelist))
         pyg.draw.rect(screen, red, (player_pos[0], player_pos[1], player_dim, player_dim))                                        # draw player
 
