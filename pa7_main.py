@@ -4,16 +4,16 @@ import math, random ##
 
 #custom stuff here
 
-def t_particleBurst(x,y,particlelist):
+def t_particleBurst(x,y,pl):
     '''
     creates a burst of particles, basic implementation
     '''
     for i in range(10):
         vx = (random.random() - 0.5) * 15
         vy = (random.random() - 0.5) * 15
-        t_createParticle(x,y,vx,vy,20,30,particlelist)
+        t_createParticle(x,y,vx,vy,20,30,pl)
 
-def t_createParticle(x,y,vx,vy,life,size,particlelist):
+def t_createParticle(x,y,vx,vy,life,size,pl):
     '''
     x y pixel coords\n
     velocity is p/s\n
@@ -21,16 +21,16 @@ def t_createParticle(x,y,vx,vy,life,size,particlelist):
     '''
     p = [x,y,vx,vy,life,size,life,size]
     ##  0  1 2  3  4    5    6    7 
-    particlelist.append(p)
+    pl.append(p)
 
-def t_updateParticles(screen,color,particlelist):
-    for i, p in enumerate(particlelist):
-        particlelist[i] = [p[0]+ p[2],p[1]+p[3],p[2],p[3],p[4] - 1,(p[4] / p[6]) * p[7],p[6],p[7]]
-    for p in list(particlelist):
+def t_updateParticles(screen,color,pl):
+    for i, p in enumerate(pl):
+        pl[i] = [p[0]+ p[2],p[1]+p[3],p[2],p[3],p[4] - 1,(p[4] / p[6]) * p[7],p[6],p[7]]
+    for p in list(pl):
         if p[4] <= 0:
-            particlelist.remove(p)
+            pl.remove(p)
     
-    for p in particlelist:
+    for p in pl:
         pyg.draw.rect(screen,color,(p[0],p[1],p[5],p[5]))
 #
 
