@@ -158,14 +158,16 @@ def main():
 
     while not game_over:                       # play until game_over == True
         for event in pyg.event.get():          # loop through events in queue
-            if event.type == pyg.KEYDOWN:      # checks for key press
-                x = player_pos[0]              # assign current x position
-                y = player_pos[1]              # assign current y position
-                if event.key == pyg.K_LEFT:    # checks if left arrow;
-                    x -= player_dim            # if true, moves player left
-                elif event.key == pyg.K_RIGHT: # checks if right arrow;
-                    x += player_dim            # else moves player right
-                player_pos = [x, y]            # reset player position
+                if event.type == pyg.KEYDOWN:      # checks for key press
+                    x = player_pos[0]              # assign current x position
+                    y = player_pos[1]               # assign current y position
+                    if x != 0:              
+                        if event.key == pyg.K_LEFT:
+                            x -= player_dim            # if true, moves player left
+                    if x != 750:
+                        if event.key == pyg.K_RIGHT: # checks if right arrow;
+                            x += player_dim            # else moves player right
+                    player_pos = [x, y]            # reset player position
             
         screen.fill(background)                # refresh screen bg color
         drop_meteors(met_list, met_dim, width) # read PA prompt
