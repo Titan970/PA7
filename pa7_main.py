@@ -15,15 +15,21 @@ def t_particleBurst(x,y,pl):
 
 def t_createParticle(x,y,vx,vy,life,size,pl):
     '''
-    x y pixel coords\n
-    velocity is p/s\n
-    life is in frames until death\n
+    Creates a particle at x and y, with vy and vx as the velocity. Life is used to determine when to destroy
+    the particle, size is the size of the particle. pl is the list of particles.
     '''
     p = [x,y,vx,vy,life,size,life,size]
     ##  0  1 2  3  4    5    6    7 
     pl.append(p)
 
 def t_updateParticles(screen,color,pl):
+    '''
+    This is a custom function with parameters, screen dimension (screen), chosen color (color), and particle list (particle list)
+    the particle list has the particle including the position, velocity, size, and lifetime. The first loop, looks nasty, but is essentially an adaptation from the pygame form "classes", but through
+    lists as to make it adaptable to the concepts we've learned in class. The second loop is to tell the
+    fucntion when it is time to remove the particle from the trail. When life ( or p[4] ) <= 0, the particle is removed from the list and therefore the screen.
+    the final for loop is just drawing the particles in the format pygame requests. ) 
+    '''
     for i, p in enumerate(pl):
         pl[i] = [p[0]+ p[2],p[1]+p[3],p[2],p[3],p[4] - 1,(p[4] / p[6]) * p[7],p[6],p[7]]
     for p in list(pl):
