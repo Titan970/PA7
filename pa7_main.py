@@ -4,25 +4,25 @@ import math, random ##
 
 #custom stuff here
 
-def t_particleBurst(x,y,pl):
+def t_particleBurst(x,y,pl): #liam
     '''
-    creates a burst of particles, basic implementation aaaaa
+    creates a burst of particles, basic implementation
     '''
     for i in range(10):
-        vx = (random.random() - 0.5) * 15
+        vx = (random.random() - 0.5) * 15 #get random x and y velocitys
         vy = (random.random() - 0.5) * 15
         t_createParticle(x,y,vx,vy,20,30,pl)
 
-def t_createParticle(x,y,vx,vy,life,size,pl):
+def t_createParticle(x,y,vx,vy,life,size,pl): #liam
     '''
-    Creates a particle at x and y, with vy and vx as the velocity. Life is used to determine when to destroy
-    the particle, size is the size of the particle. pl is the list of particles.
+    Creates a particle at x and y, with vy and vx as the velocity. Life is used to determine 
+    when to destroy the particle, size is the size of the particle. pl is the list of particles.
     '''
     p = [x,y,vx,vy,life,size,life,size]
     ##  0  1 2  3  4    5    6    7 
     pl.append(p)
 
-def t_updateParticles(screen,color,pl):
+def t_updateParticles(screen,color,pl): #liam
     '''
     This is a custom function with parameters, screen dimension (screen), chosen color (color), and particle list (particle list)
     the particle list has the particle including the position, velocity, size, and lifetime. The first loop, looks nasty, but is essentially just
@@ -30,22 +30,30 @@ def t_updateParticles(screen,color,pl):
     fucntion when it is time to remove the particle from the trail. When life ( or p[4] ) <= 0, the particle is removed from the list and therefore the screen.
     the final for loop is just drawing the particles in the format pygame requests. ) 
     '''
-    for i, p in enumerate(pl):
+    for i, p in enumerate(pl): # update each particle
         pl[i] = [p[0]+ p[2],p[1]+p[3],p[2],p[3],p[4] - 1,(p[4] / p[6]) * p[7],p[6],p[7]]
-    for p in list(pl):
+    for p in list(pl): #delete particle if life <= 0
         if p[4] <= 0:
             pl.remove(p)
     
-    for p in pl:
+    for p in pl: # draw particles
         pyg.draw.rect(screen,color,(p[0],p[1],p[5],p[5]))
 #
 
 def drop_meteors(met_list, met_dim, width): #liam
-    rx = random.randint(0, width)
+    '''
+    picks a random location on the top of the screen, and then decides whether or not to
+    spawn a meteor there.
+    '''
+    rx = random.randint(0, width) #select random x value to place meteor
     newpos = [rx,0]
-    if random.randint(0,5) == 2:
+    if random.randint(0,5) == 2: #1/6 chance to spawn meteor
         met_list.append(newpos)
+
 def set_speed(score):
+    '''
+    set the speed of the meteors based on the score
+    '''
     if score <= 1:
         speed = 1
     else:
@@ -54,7 +62,6 @@ def set_speed(score):
 
 def update_meteor_positions(met_list2, height, score, speed, a,pl):
     '''
-
     The parameters are the meteor list, with the nested list of positions, the height of the screen, the score, and the speed of the meteor.
     This function checks if the meteor is still in the range of the screen through referencing the height (since the meteor is only falling vertically.)
     For every meteor in met_position, we are checking if it is in the screen and if it is we are increasing it by the speed,
@@ -73,7 +80,6 @@ def update_meteor_positions(met_list2, height, score, speed, a,pl):
                 if random.randint(1,3) == 1:
                     t_createParticle(m[0],m[1],x*5,0,20,15,pl)
         return score
-    
 
 #add comment
 def collision_check(met_list, player_pos, player_dim, met_dim): ##shane
