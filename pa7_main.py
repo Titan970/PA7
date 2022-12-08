@@ -1,6 +1,6 @@
 import pygame as pyg
 import numpy as np 
-import math, random
+import math, random ##
 
 #custom stuff here
 
@@ -39,16 +39,16 @@ def drop_meteors(met_list, met_dim, width): #liam
     newpos = [rx,0]
     if random.randint(0,5) == 2:
         met_list.append(newpos)
-
-
-def set_speed(s):
-    '''
-    sets the speed based on the score
-    '''
-    if type(s) == type(4):
-        return s * 1
+def set_speed(score):
+    if score <= 0:
+        speed = 1
+    elif score < 5:
+        speed = score*0.5
+    elif score >= 5:
+        speed = score*0.6
     else:
-        return 999
+        speed = score*0.8
+    return speed
 
 def update_meteor_positions(met_list2, height, score, speed, a,pl):
     '''
@@ -58,11 +58,7 @@ def update_meteor_positions(met_list2, height, score, speed, a,pl):
     For every meteor in met_position, we are checking if it is in the screen and if it is we are increasing it by the speed,
     and if it isn't then the score is increased by 1. Then we return the score since it is the only parameter adjusted. 
     '''
-   #check if meteor is still in screen
-    # for met_position in met_list:
-    #   if met_position in list(range(0, height)):
-    #     #increase y, and increase the score every time the meteor goes beyond the bound.
-    #     met_position[1] += speed
+
     if a:
         for m in met_list2:
             if m[1] > height:
@@ -70,7 +66,7 @@ def update_meteor_positions(met_list2, height, score, speed, a,pl):
                 t_particleBurst(m[0],m[1]-30,pl)
                 score += 1
             else:
-                m[1] += 10
+                m[1] += speed * 5
                 x = random.random() -0.5
                 if random.randint(1,3) == 1:
                     t_createParticle(m[0],m[1],x*5,0,20,15,pl)
@@ -79,6 +75,12 @@ def update_meteor_positions(met_list2, height, score, speed, a,pl):
 
 #add comment
 def collision_check(met_list, player_pos, player_dim, met_dim): ##shane
+    '''
+    collision check: this function is non-void and has 4 parameter, the nested list of meteor positions, the list that is the position of the player,
+    the size of the player, and the size of the meteor. This func calls the detect collision func for each meteor. as soon as a collision is
+    found it returns true to main to end the game. The iterating for loop iterates over the list of meteors so that the y position is udated by the amount of pixels moved.
+    If the loop returns true, then the game is over. Then if it is false and the game continues as the character has not died.
+    '''
     for i in range(len(met_list)):
         met_pos = met_list[i]
         hit = detect_collision(met_pos, player_pos, player_dim, met_dim)
@@ -87,7 +89,10 @@ def collision_check(met_list, player_pos, player_dim, met_dim): ##shane
 
 def draw_meteors(met_list, met_dim, screen, color):#eva
     '''
-    draws the meteors onto the screen, givin the list of meteor positions
+    This fucntion is void with 4 parameters. the nested list of met_list, the meteor dimenstion in met_dim, the screen dimensions, and the color
+    of the meteors. This function is realtively simple, you just have to follow the pygame format for drawing a rectangle. 
+    The for loop then has you draw a meteor for each meteror in the meteor list. Which makes sense since in order for the game to have meteors fall,
+    you must have them drawn into the game. The function draw_meteors returns norhting since it is a void fucntion. 
     '''
     for met_position in met_list:
         pyg.draw.rect(screen, color,(met_position[0],met_position[1], met_dim, met_dim))
