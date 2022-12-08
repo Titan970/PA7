@@ -6,7 +6,7 @@ import math, random ##
 
 def t_particleBurst(x,y,pl):
     '''
-    creates a burst of particles, basic implementation
+    creates a burst of particles, basic implementation aaaaa
     '''
     for i in range(10):
         vx = (random.random() - 0.5) * 15
