@@ -40,14 +40,10 @@ def drop_meteors(met_list, met_dim, width): #liam
     if random.randint(0,5) == 2:
         met_list.append(newpos)
 def set_speed(score):
-    if score <= 0:
+    if score <= 1:
         speed = 1
-    elif score < 5:
-        speed = score*0.5
-    elif score >= 5:
-        speed = score*0.6
     else:
-        speed = score*0.8
+        speed = 1 + (score * 0.05)
     return speed
 
 def update_meteor_positions(met_list2, height, score, speed, a,pl):
