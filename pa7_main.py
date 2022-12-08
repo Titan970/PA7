@@ -1,8 +1,16 @@
+#Aziz team group #: Eva Rickard, Shane An, Tatum Piksa, Liam Morrison
+#12/07/22
+#PA 7
+#Meteor Game
+#This program is a rudimentry game around the idea of the player dodging "meteors." The player dodges the meteors and as the meteors fall out of the
+#frame the score increases. As the score increases, the speed of the meteors falling increases. This way the game gets harder, so it is more challenging. 
+#If the meteor intersects with the player, the game is over and the final score that has been accumulating, is shown to the player.
+
 import pygame as pyg
 import numpy as np 
 import math, random ##
 
-#custom stuff here
+#custom functions here
 
 def t_particleBurst(x,y,pl): #liam
     '''
@@ -38,7 +46,7 @@ def t_updateParticles(screen,color,pl): #liam
     
     for p in pl: # draw particles
         pyg.draw.rect(screen,color,(p[0],p[1],p[5],p[5]))
-#
+# end custom functions
 
 def drop_meteors(met_list, met_dim, width): #liam
     '''
@@ -106,6 +114,10 @@ def draw_meteors(met_list, met_dim, screen, color):#eva
         pyg.draw.rect(screen, color,(met_position[0],met_position[1], met_dim, met_dim))
 
 def detect_collision(met_pos, player_pos, player_dim, met_dim): #liam
+    '''
+    tests wheather the player's position + dimentions are within a meteors position + dimentions, 
+    and if so, returns True. Otherwise, returns False.
+    '''
     px = player_pos[0]
     py = player_pos[1]
     mx = met_pos[0]
@@ -154,8 +166,7 @@ def main():
 
     score = 0                 # initialize score
     #custom
-    t_utime = 0
-    particlelist = []
+    particlelist = [] ##the master lists that contains all the particles.
     #
 
     clock = pyg.time.Clock()  # initialize clock to track time
@@ -188,7 +199,7 @@ def main():
                                                    # blit to mean draw
         draw_meteors(met_list, met_dim, screen, yellow) # self-explanatory;
                                                         # read PA prompt
-        t_updateParticles(screen,white,particlelist)
+        t_updateParticles(screen,white,particlelist) ##update all the particles in the particlelist
         print(len(particlelist))
         pyg.draw.rect(screen, red, (player_pos[0], player_pos[1], player_dim, player_dim))                                        # draw player
 
@@ -196,7 +207,6 @@ def main():
             game_over = True                       # read PA prompt
     
         clock.tick(30)                             # set frame rate to control
-        t_utime += 1
         
                                                    # frames per second (~30); 
                                                    # slows down game
